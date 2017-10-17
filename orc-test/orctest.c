@@ -40,6 +40,14 @@
 #include <string.h>
 #include <math.h>
 
+// ios 11 has no system need ftw.h
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+  #if TARGET_OS_IPHONE
+    #include <ftw.h>
+  #endif
+#endif
+
 #ifdef _MSC_VER
 #define isnan(x) _isnan(x)
 #define snprintf _snprintf
@@ -131,7 +139,11 @@ orc_test_gcc_compile (OrcProgram *p)
       obj_filename);
 #endif
   ORC_ASSERT(n < sizeof(cmd));
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     ORC_ERROR ("gcc failed");
     printf("%s\n", orc_program_get_asm_code (p));
@@ -144,7 +156,11 @@ orc_test_gcc_compile (OrcProgram *p)
   n = snprintf (cmd, sizeof(cmd), "objdump -dr %s >%s", obj_filename, dis_filename);
 #endif
   ORC_ASSERT(n < sizeof(cmd));
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+      ret = -1
+  #else
+      ret = system (cmd);
+  #endif
   if (ret != 0) {
     ORC_ERROR ("objdump failed");
     return ORC_TEST_FAILED;
@@ -164,7 +180,11 @@ orc_test_gcc_compile (OrcProgram *p)
       "--redefine-sym _binary_temp_orc_test_dump_bin_start=%s "
       "%s %s", p->name, dump_filename, obj_filename);
   ORC_ASSERT(n < sizeof(cmd));
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("objcopy failed\n");
     return ORC_TEST_FAILED;
@@ -176,7 +196,11 @@ orc_test_gcc_compile (OrcProgram *p)
   n = snprintf (cmd, sizeof(cmd), "objdump -Dr %s >%s", obj_filename, dump_dis_filename);
 #endif
   ORC_ASSERT(n < sizeof(cmd));
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("objdump failed\n");
     return ORC_TEST_FAILED;
@@ -184,7 +208,11 @@ orc_test_gcc_compile (OrcProgram *p)
 
   n = snprintf (cmd, sizeof(cmd), "diff -u %s %s", dis_filename, dump_dis_filename);
   ORC_ASSERT(n < sizeof(cmd));
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("diff failed\n");
     return ORC_TEST_FAILED;
@@ -248,14 +276,22 @@ orc_test_gcc_compile_neon (OrcProgram *p)
 
   sprintf (cmd, PREFIX "gcc -march=armv6t2 -mcpu=cortex-a8 -mfpu=neon -Wall "
       "-c %s -o %s", source_filename, obj_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     ORC_ERROR ("arm gcc failed");
     return ORC_TEST_INDETERMINATE;
   }
 
   sprintf (cmd, PREFIX "objdump -dr %s >%s", obj_filename, dis_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     ORC_ERROR ("objdump failed");
     return ORC_TEST_INDETERMINATE;
@@ -266,21 +302,33 @@ orc_test_gcc_compile_neon (OrcProgram *p)
       "--rename-section .data=.text "
       "--redefine-sym _binary_temp_orc_test_dump_bin_start=%s "
       "%s %s", p->name, dump_filename, obj_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("objcopy failed\n");
     return ORC_TEST_INDETERMINATE;
   }
 
   sprintf (cmd, PREFIX "objdump -Dr %s >%s", obj_filename, dump_dis_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("objdump failed\n");
     return ORC_TEST_INDETERMINATE;
   }
 
   sprintf (cmd, "diff -u %s %s", dis_filename, dump_dis_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("diff failed\n");
     return ORC_TEST_FAILED;
@@ -343,7 +391,11 @@ orc_test_gcc_compile_c64x (OrcProgram *p)
 
   sprintf (cmd, C64X_PREFIX "cl6x -mv=6400+ "
       "-c %s", source_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     ORC_ERROR ("compiler failed");
     /* printf("%s\n", orc_program_get_asm_code (p)); */
@@ -351,7 +403,11 @@ orc_test_gcc_compile_c64x (OrcProgram *p)
   }
 
   sprintf (cmd, C64X_PREFIX "dis6x %s >%s", obj_filename, dis_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     ORC_ERROR ("objdump failed");
     return ORC_TEST_INDETERMINATE;
@@ -363,7 +419,11 @@ orc_test_gcc_compile_c64x (OrcProgram *p)
       "--rename-section .data=.text "
       "--redefine-sym _binary_temp_orc_test_dump_bin_start=%s "
       "%s %s", p->name, dump_filename, obj_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("objcopy failed\n");
     return ORC_TEST_FAILED;
@@ -372,14 +432,22 @@ orc_test_gcc_compile_c64x (OrcProgram *p)
 
 #if 0
   sprintf (cmd, C64X_PREFIX "dis6x %s >%s", dump_filename, dump_dis_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("objdump failed\n");
     return ORC_TEST_FAILED;
   }
 
   sprintf (cmd, "diff -u %s %s", dis_filename, dump_dis_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("diff failed\n");
     return ORC_TEST_FAILED;
@@ -1130,14 +1198,22 @@ orc_test_gcc_compile_mips (OrcProgram *p)
 
   sprintf (cmd, MIPS_PREFIX "gcc -mips32r2 -mdspr2 -Wall "
       "-c %s -o %s", source_filename, obj_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     ORC_ERROR ("mips gcc failed");
     return ORC_TEST_INDETERMINATE;
   }
 
   sprintf (cmd, MIPS_PREFIX "objdump -Dr -j .text %s >%s", obj_filename, dis_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     ORC_ERROR ("objdump failed");
     return ORC_TEST_INDETERMINATE;
@@ -1148,21 +1224,33 @@ orc_test_gcc_compile_mips (OrcProgram *p)
       "--rename-section .data=.text "
       "--redefine-sym _binary_temp_orc_test_dump_bin_start=%s "
       "%s %s", p->name, dump_filename, obj_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("objcopy failed\n");
     return ORC_TEST_INDETERMINATE;
   }
 
   sprintf (cmd, MIPS_PREFIX "objdump -Dr %s >%s", obj_filename, dump_dis_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("objdump failed\n");
     return ORC_TEST_INDETERMINATE;
   }
 
   sprintf (cmd, "diff -u %s %s", dis_filename, dump_dis_filename);
-  ret = system (cmd);
+  #if TARGET_OS_IPHONE
+    ret = -1
+  #else
+    ret = system (cmd);
+  #endif
   if (ret != 0) {
     printf("diff failed\n");
     return ORC_TEST_FAILED;
@@ -1176,4 +1264,3 @@ orc_test_gcc_compile_mips (OrcProgram *p)
 
   return ORC_TEST_OK;
 }
-
