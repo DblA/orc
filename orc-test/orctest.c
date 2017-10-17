@@ -140,7 +140,7 @@ orc_test_gcc_compile (OrcProgram *p)
 #endif
   ORC_ASSERT(n < sizeof(cmd));
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -157,7 +157,7 @@ orc_test_gcc_compile (OrcProgram *p)
 #endif
   ORC_ASSERT(n < sizeof(cmd));
   #if TARGET_OS_IPHONE
-      ret = -1
+      ret = -1;
   #else
       ret = system (cmd);
   #endif
@@ -181,7 +181,7 @@ orc_test_gcc_compile (OrcProgram *p)
       "%s %s", p->name, dump_filename, obj_filename);
   ORC_ASSERT(n < sizeof(cmd));
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -197,7 +197,7 @@ orc_test_gcc_compile (OrcProgram *p)
 #endif
   ORC_ASSERT(n < sizeof(cmd));
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -209,7 +209,7 @@ orc_test_gcc_compile (OrcProgram *p)
   n = snprintf (cmd, sizeof(cmd), "diff -u %s %s", dis_filename, dump_dis_filename);
   ORC_ASSERT(n < sizeof(cmd));
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -277,7 +277,7 @@ orc_test_gcc_compile_neon (OrcProgram *p)
   sprintf (cmd, PREFIX "gcc -march=armv6t2 -mcpu=cortex-a8 -mfpu=neon -Wall "
       "-c %s -o %s", source_filename, obj_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -288,7 +288,7 @@ orc_test_gcc_compile_neon (OrcProgram *p)
 
   sprintf (cmd, PREFIX "objdump -dr %s >%s", obj_filename, dis_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -303,7 +303,7 @@ orc_test_gcc_compile_neon (OrcProgram *p)
       "--redefine-sym _binary_temp_orc_test_dump_bin_start=%s "
       "%s %s", p->name, dump_filename, obj_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -314,7 +314,7 @@ orc_test_gcc_compile_neon (OrcProgram *p)
 
   sprintf (cmd, PREFIX "objdump -Dr %s >%s", obj_filename, dump_dis_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -325,7 +325,7 @@ orc_test_gcc_compile_neon (OrcProgram *p)
 
   sprintf (cmd, "diff -u %s %s", dis_filename, dump_dis_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -392,7 +392,7 @@ orc_test_gcc_compile_c64x (OrcProgram *p)
   sprintf (cmd, C64X_PREFIX "cl6x -mv=6400+ "
       "-c %s", source_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -404,7 +404,7 @@ orc_test_gcc_compile_c64x (OrcProgram *p)
 
   sprintf (cmd, C64X_PREFIX "dis6x %s >%s", obj_filename, dis_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -420,7 +420,7 @@ orc_test_gcc_compile_c64x (OrcProgram *p)
       "--redefine-sym _binary_temp_orc_test_dump_bin_start=%s "
       "%s %s", p->name, dump_filename, obj_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -433,7 +433,7 @@ orc_test_gcc_compile_c64x (OrcProgram *p)
 #if 0
   sprintf (cmd, C64X_PREFIX "dis6x %s >%s", dump_filename, dump_dis_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;;
   #else
     ret = system (cmd);
   #endif
@@ -444,7 +444,7 @@ orc_test_gcc_compile_c64x (OrcProgram *p)
 
   sprintf (cmd, "diff -u %s %s", dis_filename, dump_dis_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -1199,7 +1199,7 @@ orc_test_gcc_compile_mips (OrcProgram *p)
   sprintf (cmd, MIPS_PREFIX "gcc -mips32r2 -mdspr2 -Wall "
       "-c %s -o %s", source_filename, obj_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -1210,7 +1210,7 @@ orc_test_gcc_compile_mips (OrcProgram *p)
 
   sprintf (cmd, MIPS_PREFIX "objdump -Dr -j .text %s >%s", obj_filename, dis_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -1225,7 +1225,7 @@ orc_test_gcc_compile_mips (OrcProgram *p)
       "--redefine-sym _binary_temp_orc_test_dump_bin_start=%s "
       "%s %s", p->name, dump_filename, obj_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -1236,7 +1236,7 @@ orc_test_gcc_compile_mips (OrcProgram *p)
 
   sprintf (cmd, MIPS_PREFIX "objdump -Dr %s >%s", obj_filename, dump_dis_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
@@ -1247,7 +1247,7 @@ orc_test_gcc_compile_mips (OrcProgram *p)
 
   sprintf (cmd, "diff -u %s %s", dis_filename, dump_dis_filename);
   #if TARGET_OS_IPHONE
-    ret = -1
+    ret = -1;
   #else
     ret = system (cmd);
   #endif
