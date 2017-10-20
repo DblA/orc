@@ -40,12 +40,15 @@
 #include <string.h>
 #include <math.h>
 
-// ios 11 has no system need ftw.h
+// ios 11 has no system.h so include TargetConditionals.h so we can check for
+// iOS if working with Apple products.
 #ifdef __APPLE__
 #include "TargetConditionals.h"
-  #if TARGET_OS_IPHONE
-    #include <ftw.h>
-  #endif
+#endif
+
+// Include system.h if not iOS
+#if !(TARGET_OS_IPHONE)
+#include <system.h>
 #endif
 
 #ifdef _MSC_VER
@@ -140,7 +143,7 @@ orc_test_gcc_compile (OrcProgram *p)
 #endif
   ORC_ASSERT(n < sizeof(cmd));
   #if TARGET_OS_IPHONE
-    ret = -1;
+    ret = -1; // Always return test failure when using iOS
   #else
     ret = system (cmd);
   #endif
