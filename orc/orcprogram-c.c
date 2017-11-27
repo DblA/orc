@@ -110,11 +110,11 @@ orc_target_c_get_asm_preamble (void)
     "#define ORC_MAX(a,b) ((a)>(b) ? (a) : (b))\n"
     "#define ORC_SB_MAX 127\n"
     "#define ORC_SB_MIN (-1-ORC_SB_MAX)\n"
-    "#define ORC_UB_MAX 255\n"
+    "#define ORC_UB_MAX (orc_uint8) 255\n"
     "#define ORC_UB_MIN 0\n"
     "#define ORC_SW_MAX 32767\n"
     "#define ORC_SW_MIN (-1-ORC_SW_MAX)\n"
-    "#define ORC_UW_MAX 65535\n"
+    "#define ORC_UW_MAX (orc_uint16)65535\n"
     "#define ORC_UW_MIN 0\n"
     "#define ORC_SL_MAX 2147483647\n"
     "#define ORC_SL_MIN (-1-ORC_SL_MAX)\n"
@@ -823,7 +823,7 @@ c_rule_loadpX (OrcCompiler *p, void *user, OrcInstruction *insn)
     }
   } else if (p->vars[insn->src_args[0]].vartype == ORC_VAR_TYPE_CONST) {
     if (p->vars[insn->src_args[0]].size <= 4) {
-      ORC_ASM_CODE(p,"    %s = (int)0x%08x; /* %d or %gf */\n", dest,
+      ORC_ASM_CODE(p,"    %s = 0x%08x; /* %d or %gf */\n", dest,
           (unsigned int)p->vars[insn->src_args[0]].value.i,
           (int)p->vars[insn->src_args[0]].value.i,
           p->vars[insn->src_args[0]].value.f);

@@ -1,5 +1,5 @@
 AC_PREREQ([2.68])
-AC_INIT([orc], [0.4.27.1], [http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer&component=orc],[orc])
+AC_INIT([orc], [0.4.28.1], [http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer&component=orc],[orc])
 dnl don't forget to update libversion
 
 AS_NANO(ORC_GIT=no,ORC_GIT=yes)
@@ -22,7 +22,7 @@ dnl - library source changed -> increment REVISION
 dnl - interfaces added/removed/changed -> increment CURRENT, REVISION = 0
 dnl - interfaces added -> increment AGE
 dnl - interfaces removed -> AGE = 0
-ORC_LIBVERSION="27:0:27"
+ORC_LIBVERSION="28:0:28"
 AC_SUBST(ORC_LIBVERSION)
 LT_PREREQ([2.2.6])
 LT_INIT([dlopen win32-dll disable-static])
@@ -204,6 +204,19 @@ AM_CONDITIONAL(ENABLE_BACKEND_ARM, test "x$ENABLE_BACKEND_ARM" = "xyes")
 AM_CONDITIONAL(ENABLE_BACKEND_C64X, test "x$ENABLE_BACKEND_C64X" = "xyes")
 AM_CONDITIONAL(ENABLE_BACKEND_MIPS, test "x$ENABLE_BACKEND_MIPS" = "xyes")
 
+dnl building of tests
+AC_ARG_ENABLE(tests,
+  AS_HELP_STRING([--disable-tests],[disable building test apps]),
+  [
+    case "${enableval}" in
+      yes) BUILD_TESTS=yes ;;
+      no)  BUILD_TESTS=no ;;
+      *)   AC_MSG_ERROR(bad value ${enableval} for --disable-tests) ;;
+    esac
+  ],
+[BUILD_TESTS=yes]) dnl Default value
+AM_CONDITIONAL(BUILD_TESTS,         test "x$BUILD_TESTS" = "xyes")
+
 dnl Check for -Bsymbolic-functions linker flag used to avoid
 dnl intra-library PLT jumps, if available.
 AC_ARG_ENABLE(Bsymbolic,
@@ -255,3 +268,22 @@ orc.pc
 ])
 AC_OUTPUT
 
+echo "
+
+Configuration
+	Version                    : ${VERSION}
+	Source code location       : ${srcdir}
+	Prefix                     : ${prefix}
+	Compiler                   : ${CC}
+
+	API Documentation          : ${enable_gtk_doc}
+
+	Enable SSE backend         : ${ENABLE_BACKEND_SSE}
+	Enable MMX backend         : ${ENABLE_BACKEND_MMX}
+	Enable ALTIVEC backend     : ${ENABLE_BACKEND_ALTIVEC}
+	Enable NEON backend        : ${ENABLE_BACKEND_NEON}
+	Enable C64X backend        : ${ENABLE_BACKEND_C64X}
+	Enable MIPS backend        : ${ENABLE_BACKEND_MIPS}
+
+	Building test apps         : ${BUILD_TESTS}
+"
